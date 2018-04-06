@@ -1,5 +1,5 @@
 <?php
-$result = json_decode(uploadFile($_FILES['file'], './storage'), true);
+$result = json_decode(uploadFile($_FILES['file'], './updates'), true);
 var_dump($result);
 /**
  * 使用系统全局变量：$_FILES 实现上传文件到指定的目录
