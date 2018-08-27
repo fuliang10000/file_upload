@@ -2,9 +2,9 @@
 $result = json_decode(uploadFile($_FILES['file'], './updates'), true);
 var_dump($result);
 /**
- * Ê¹ÓÃÏµÍ³È«¾Ö±äÁ¿£º$_FILES ÊµÏÖÉÏ´«ÎÄ¼şµ½Ö¸¶¨µÄÄ¿Â¼
- * @param array $cert ÏµÍ³È«¾Ö±äÁ¿£º$_FILES['myFile']£¨±ØÒª²ÎÊı£©
- * @param string $savePath Ö¸¶¨ÎÄ¼ş±£´æµÄÂ·¾¶£¬Ä¬ÈÏ£º'./uploads/ÄêÔÂÈÕ/'
+ * ä½¿ç”¨ç³»ç»Ÿå…¨å±€å˜é‡ï¼š$_FILES å®ç°ä¸Šä¼ æ–‡ä»¶åˆ°æŒ‡å®šçš„ç›®å½•
+ * @param array $cert ç³»ç»Ÿå…¨å±€å˜é‡ï¼š$_FILES['myFile']ï¼ˆå¿…è¦å‚æ•°ï¼‰
+ * @param string $savePath æŒ‡å®šæ–‡ä»¶ä¿å­˜çš„è·¯å¾„ï¼Œé»˜è®¤ï¼š'./uploads/å¹´æœˆæ—¥/'
  * @example
  * $cert = $_FILES['file'];
  * $savePath = './updates/';
@@ -25,22 +25,22 @@ function uploadFile ($cert, $savePath = '') {
     header('Content-Type: text/html; charset=utf-8');
     try {
 
-        /*ÑéÖ¤²ÎÊı*/
+        /*éªŒè¯å‚æ•°*/
         if (!is_array($cert)) {
             throw new Exception('PARAMS ERROR!');
         }
 
-        /*ÑéÖ¤ÊÇ·ñÉÏ´«³É¹¦*/
+        /*éªŒè¯æ˜¯å¦ä¸Šä¼ æˆåŠŸ*/
         if ($cert['error'] > 0) {
-            throw new Exception('UPLOAD FAIL£º' . $cert['error']);
+            throw new Exception('UPLOAD FAILï¼š' . $cert['error']);
         }
 
         $url      = $cert['tmp_name'];
-        $name     = $cert['name'];                           //ÎÄ¼şÃû
-        $fileSize = round($cert['size']/1024/1024, 2) .'MB'; //ÎÄ¼ş´óĞ¡
-        $fileType = $cert['type'];                           // ÎÄ¼şÀàĞÍ
+        $name     = $cert['name'];                           //æ–‡ä»¶å
+        $fileSize = round($cert['size']/1024/1024, 2) .'MB'; //æ–‡ä»¶å¤§å°
+        $fileType = $cert['type'];                           // æ–‡ä»¶ç±»å‹
 
-        /*ÉèÖÃÉÏ´«Â·¾¶£¬Ä¬ÈÏ±£´æµ½uploadsÎÄ¼ş¼ĞÏÂµÄµ±Ç°ÈÕÆÚÄ¿Â¼ÏÂ*/
+        /*è®¾ç½®ä¸Šä¼ è·¯å¾„ï¼Œé»˜è®¤ä¿å­˜åˆ°uploadsæ–‡ä»¶å¤¹ä¸‹çš„å½“å‰æ—¥æœŸç›®å½•ä¸‹*/
         if (empty($savePath)) {
             $savePath = './uploads/' . date('Ymd');
         }
@@ -50,13 +50,13 @@ function uploadFile ($cert, $savePath = '') {
                 throw new \Exception('CREATE DIR FAIL!');
             }
         }
-        /*ÒÔÔ­ÎÄ¼şÃûÀ´ÃüÃûÉÏ´«µÄÎÄ¼ş*/
+        /*ä»¥åŸæ–‡ä»¶åæ¥å‘½åä¸Šä¼ çš„æ–‡ä»¶*/
         $filePath = $savePath . $name;
         if (is_file($filePath)) {
             throw new \Exception('FILE EXIST!');
         }
 
-        /*±£´æÎÄ¼şµ½Ö¸¶¨Ä¿Â¼*/
+        /*ä¿å­˜æ–‡ä»¶åˆ°æŒ‡å®šç›®å½•*/
         if (!move_uploaded_file($url, iconv("UTF-8", "GBK", $filePath))) {
             throw new Exception('FAILED TO UPLOAD FILES TO THE SPECIFIED DIR!');
         }
