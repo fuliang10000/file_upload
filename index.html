@@ -5,9 +5,38 @@
     <title>文件上传</title>
 </head>
 <body>
-<form method="post" action="./upload.php" enctype="multipart/form-data">
-    <input type="file" name="file"/>
-    <input type="submit" value="提交"/>
-</form>
+<!--<form id="myform" method="post" enctype="multipart/form-data">-->
+    <input id="file" type="file" name="file"/>
+<!--</form>-->
+<script type="text/javascript" src="./jquery.min.js"></script>
+<script type="text/javascript">
+    $('input[name=file]').on('change', function () {
+        var formData = new FormData();
+        var file = $('input[name=file]')[0].files[0];
+        formData.append("file", file);
+        $.ajax({
+            url: 'upload.php',
+            data: formData,
+            type: 'POST',
+            dataType: "json",
+            processData : false, // 使数据不做处理
+            contentType : false, // 不要设置Content-Type请求头
+            success: function (data) {
+                console.log(data);
+            },
+            statusCode: {
+                404: function () {
+                    //COMMON.isSend = true;
+                    console.log('404');
+                }
+            },
+            error: function (msg) {
+                //COMMON.isSend = true;
+                // console.error(msg);
+            }
+        });
+        // document.forms["myform"].submit();
+    });
+</script>
 </body>
 </html>
